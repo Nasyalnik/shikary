@@ -10,7 +10,8 @@
     "cheerio": "^1.0.0-rc.2",
     "elasticsearch": "^15.2.0",
     "html-entities": "^1.2.1",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "sha256": "^0.2.0"
   },
   "scripts": {
     "start": "node index.js"

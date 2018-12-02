@@ -2,6 +2,7 @@ const fetch = require('node-fetch');
 const $ = require('cheerio');
 const entities = require('html-entities').AllHtmlEntities;
 const elasticsearch = require('elasticsearch');
+const sha = require('sha256');
 
 var client = new elasticsearch.Client({
     host: 'localhost:9200',
@@ -27,8 +28,22 @@ function main() {
                 const talk = {
                     authors: authors,
                     name: $('.title', el).text(),
-                    preview: 'https://sqadays.com' + $('.title', el).attr('href')
+                    preview: 'https://sqadays.com' + $('.title', el).attr('href'),
+                    conference: {
+                        name: 'SQADays',
+                        year: '2018' 
+                    }
                 }
+                if (talk.authors.length == 0) {
+                    console.log('author is empty');
+                }
+                else 
+                client.index({
+                    index: 'shikary',
+                    type: 'talks',
+                    body: talk,
+                    id: sha(talk.conference.name+talk.conference.year+talk.name)
+                  });
 
                 console.log(talk);
             });
